@@ -1,0 +1,170 @@
+---
+title: "WQD7004_project_part"
+author: "Sakshi"
+date: "6/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### BMR Calculation
+
+```{r}
+cal_bmr = function(gen,wt,ht,age){
+  if(gen == 'M'){
+    66 + (13.7*wt)+5*(ht)-(6.8*age)
+  }else if(gen == "F"){
+    655 +(9.6*wt)+1.8*(ht)-(4.7*age)
+  }else{
+    print("wrong input")
+  }
+}
+# Input required
+weight = 65 
+height = 152 
+age = 27 
+gender = 'F' 
+
+BMR = cal_bmr(gender,weight,height,age)
+BMR
+
+```
+
+
+
+## Activity Multiplier
+```{r}
+
+activity_cal = function(activity){
+  if(activity == 'sendetary'){
+  multiplier = BMR*1.2
+  }else if(activity == 'lightly_active'){
+  multiplier = BMR*1.375
+  }else if(activity == 'moderatly_active'){
+  multiplier = BMR * 1.55
+  }else if(activity == 'very_active'){
+  multiplier = BMR *1.725
+  }else if(activity == 'extra_active'){
+  multiplier = BMR*1.9
+  }else{
+    print("enter correct input")
+  }
+}
+
+calorie_required_based_on_activity = activity_cal('lightly_active')  ## just an example
+calorie_required_based_on_activity
+
+```
+
+
+## Calorie need as per goal
+```{r}
+
+goal_cal = function(goal){
+  
+  if(goal == "maintain_weight"){
+    
+    maintain_weight = calorie_required_based_on_activity
+    
+    carbs_cal = (50/100)*maintain_weight
+    protein_cal = (30/100)*maintain_weight
+    fat_cal = (20/100)*maintain_weight
+    
+    return(data.frame(carbs_cal,protein_cal,fat_cal))
+    
+  }else if(goal == "loose_weight"){
+    
+    loose_weight = calorie_required_based_on_activity*0.9
+    
+    carbs_cal = (40/100)*loose_weight
+    protein_cal = (30/100)*loose_weight
+    fat_cal = (30/100)*loose_weight
+    
+    return(data.frame(carbs_cal,protein_cal,fat_cal))
+    
+  }else if(goal == "gain_weight"){
+    
+    gain_weight = calorie_required_based_on_activity *1.1
+    
+    carbs_cal = (55/100)*gain_weight
+    protein_cal = (30/100)*gain_weight
+    fat_cal = (15/100)*gain_weight
+    
+    return(data.frame(carbs_cal,protein_cal,fat_cal))
+    
+  }else if(goal=="RDA Typical"){
+    
+     maintain_weight = calorie_required_based_on_activity
+     
+     carbs_cal = (50/100)*maintain_weight
+     protein_cal = (25/100)*maintain_weight
+     fat_cal = (25/100)*maintain_weight
+     return(data.frame(carbs_cal,protein_cal,fat_cal))
+     
+  }else if(goal=="Muscle gain"){
+    
+    maintain_weight = calorie_required_based_on_activity
+    
+    carbs_cal = (55/100)*maintain_weight
+    protein_cal = (30/100)*maintain_weight
+    fat_cal = (30/100)*maintain_weight
+    return(data.frame(carbs_cal,protein_cal,fat_cal))
+    
+  }else if(goal=="keto diet"){
+    
+    maintain_weight = calorie_required_based_on_activity
+    
+    carbs_cal = (8/100)*maintain_weight
+    protein_cal = (20/100)*maintain_weight
+    fat_cal = (65/100)*maintain_weight
+    return(data.frame(carbs_cal,protein_cal,fat_cal))
+  }else{
+    
+    print("wrong input")
+  }
+  
+}
+micronutrients = goal_cal("keto diet")
+micronutrients
+
+```
+
+## Loading the data set and modifying grams into calories
+```{r}
+my_nurients_data = read.csv("C:/Users/SAKSHI/Documents/R/WQD7001_Project/nutrients_cleaned.csv",stringsAsFactors = FALSE)
+
+
+library(dplyr)
+category_data = unique(my_nurients_data$Category)  ## finding diffrent categories
+
+
+## convering grams into calories for protein,carbs,fat
+
+cal_data = my_nurients_data %>% mutate(Protein = 4*Protein , Carbs = 4*Carbs, Fat = 9*Fat) %>% select(Food,Calories,Grams,Protein,Carbs,Fat,Category)
+cal_data
+
+## sum of each nutrients for finding percentage of each nutrients category wise
+#total_nutrients = cal_dat %>% group_by(Category) %>% summarise(sum(Grams),sum(Calories),sum(Protein),sum(Fat),sum(Carbs))
+
+```
+
+## recommending food
+```{r}
+
+
+c = cal_data %>% filter(Carbs<=x$carbs_cal) %>% select(Food,Carbs) %>% arrange(desc(Carbs))
+c1 = head(c,1)
+
+p = cal_data %>% filter(Protein<=x$protein_cal) %>% select(Food,Protein) %>% arrange(desc(Protein))
+p1=head(p,1)
+
+f = cal_data %>% filter(Fat<=x$fat_cal) %>% select(Food,Fat) %>% arrange(desc(Fat))
+f1 =head(f,1)
+
+recommended_food = data.frame("Carbs"=c1$Food,"prot"=p1$Food,"fat"=f1$Food) 
+recommended_food
+
+
+```
