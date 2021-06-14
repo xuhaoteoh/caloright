@@ -43,7 +43,7 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
                            mainPanel(
                              h1("How much calories shall you take?"),
                              
-                             h4("Your Basic Metabolic Rate (BMR) is "),
+                             h4("Your Basal Metabolic Rate (BMR) is "),
                              verbatimTextOutput("BMR"), #change according to output
                              h4("Your Total Daily Energy Expenditure (TDEE) is "),
                              verbatimTextOutput("TDEE"), #change according to output, TDEE is the "multiplier" variable in the RMD file.
