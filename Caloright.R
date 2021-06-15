@@ -4,6 +4,26 @@ library(shiny)
 library(shinythemes)
 library(ggplot2)
 
+
+my_nurients_data = read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
+
+library(dplyr)
+category_data = unique(my_nurients_data$Category)  ## finding different categories
+
+
+## convering grams into calorrie for protein,carbs,fat
+cal_dat = my_nurients_data %>% mutate(Protein = 4*Protein , Carbs = 4*Carbs, Fat = 9*Fat) %>% select(Food,Calories,Grams,Protein,Carbs,Fat,Category)
+cal_dat
+
+## sum of each nutrients
+total_nutrients = cal_dat %>% group_by(Category) %>% summarise(sum(Grams),sum(Calories),sum(Protein),sum(Fat),sum(Carbs))
+
+#sort food category based on total calories
+
+total_nutrients <- total_nutrients[order(-total_nutrients$`sum(Calories)`), ]
+total_nutrients
+
+
 # Define UI
 ui <- fluidPage(
   theme = shinytheme("cyborg"),
@@ -48,8 +68,16 @@ ui <- fluidPage(
                plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
              
-    )# Navbar 1, tabPanel
-    
+    ),# Navbar 1, tabPanel
+    tabPanel("Food Search", 
+             
+             selectizeInput(
+               'food_id', '1) Food Category', choices = total_nutrients$Category,
+               options = list(
+                 placeholder = 'Type to search for ingredient',
+                 onInitialize = I('function() { this.setValue(""); }')
+               )
+             ))
     
   ) # navbarPage
 )# fluidPage
