@@ -1,85 +1,100 @@
-####################################
-# Data Professor                   #
-# http://youtube.com/dataprofessor #
-# http://github.com/dataprofessor  #
-####################################
+#Testing
 
-# Modified from Winston Chang, 
-# https://shiny.rstudio.com/gallery/shiny-theme-selector.html
-
-# Concepts about Reactive programming used by Shiny, 
-# https://shiny.rstudio.com/articles/reactivity-overview.html
-
-# Load R packages
 library(shiny)
 library(shinythemes)
 
 
 # Define UI
-ui <- fluidPage(theme = shinytheme("cyborg"),
-                navbarPage(
-                  # theme = "cerulean",  # <--- To use a theme, uncomment this
-                  "Caloright",
-                  tabPanel("Calories & Nutrition",
-                           sidebarPanel(
-                             tags$h3("Input:"),
-                             numericInput("weight", "Weight (kg):", ""),
-                             numericInput("height", "Height (cm):", ""),
-                             numericInput("age", "Age:", ""),
-                             selectInput("gender","Gender:",
-                                         c("Male" = "male",
-                                           "Female" = "female")),
-                             selectInput("activity","Activity level",
-                                         c("Sedentery" = "sedentery",
-                                           "Lightly Active" = "lightly_active",
-                                           "Moderately Active" = "moderately_active",
-                                           "Very Active" = "very_active",
-                                           "Extra Active" = "extra_active")),
-                             selectInput("goal","What is your goal?",
-                                         c("Lose Weight" = "lose_weight",
-                                           "Maintain Weight" = "maintain_weight",
-                                           "Increase Weight" = "increase_weight")),
-                           ), # sidebarPanel
-                           mainPanel(
-                             h1("How much calories shall you take?"),
-                             
-                             h4("Your Basal Metabolic Rate (BMR) is "),
-                             verbatimTextOutput("BMR"), #change according to output
-                             h4("Your Total Daily Energy Expenditure (TDEE) is "),
-                             verbatimTextOutput("TDEE"), #change according to output, TDEE is the "multiplier" variable in the RMD file.
-                             h4("To achieve your goal, the amount of calories you shall take is"),
-                             verbatimTextOutput(" "), #change according to output
-                             h4("Your nutritions shall be distributed as below"),
-                             verbatimTextOutput(" "), #change according to output
-                           ) # mainPanel
-                           
-                  ), # Navbar 1, tabPanel
-                  tabPanel("Food Search", 
-                           
-                           sidebarPanel( #Need to Edit
-                             tags$h3("Input:"),
-                             textInput("FoodName", "Please enter the name of the food:"),
-                             # can be changed to drop down select input too.
-                             h5("This application shows your the nutrients and calories of your food.")
-                           ),
-                           mainPanel(
-                             h5('The food that is selected is'),
-                             verbatimTextOutput(" "), #display the nutritents and calories
-                             verbatimTextOutput(" ") #show that it is high in what nutrients
-                           )),
-                  tabPanel("Food Reccomendation",
-                           flowLayout(
-                             h5("This tab shows the reccommended food.")
-                           ))
-                  
-                ) # navbarPage
+ui <- fluidPage(
+  theme = shinytheme("cyborg"),
+  navbarPage(
+    # theme = "cerulean",  # <--- To use a theme, uncomment this
+    "Caloright",
+    tabPanel("Calories & Nutrition",
+             sidebarPanel(
+               tags$h3("Input:"),
+               numericInput('weight', 'Weight (kg):', 55, min = 40, max = 300, step = 1),
+               numericInput('height', 'Height (cm):', 150, min = 80, max = 200, step = 1),
+               numericInput('age', 'Age:', 20, min = 1, max = 100, step = 1),
+               selectInput('gender','Gender:',
+                           c("Male" = "male",
+                             "Female" = "female")),
+               selectInput('activity','Activity level',
+                           c("Sedentary" = "sedentary",
+                             "Lightly Active" = "lightly_active",
+                             "Moderately Active" = "moderately_active",
+                             "Very Active" = "very_active",
+                             "Extra Active" = "extra_active")),
+               selectInput('goal','What is your goal?',
+                           c("Lose Weight" = "lose_weight",
+                             "Maintain Weight" = "maintain_weight",
+                             "Increase Weight" = "increase_weight")),
+               submitButton('Submit')
+             ), # sidebarPanel
+             mainPanel(
+               h1('How much calories shall you take?'),
+               
+               h4('Your Basal Metabolic Rate (BMR) is '),
+               verbatimTextOutput("BMRCalculation"), #change according to output
+               h4('Your Total Daily Energy Expenditure (TDEE) is '),
+               verbatimTextOutput("TDEECalculation"), #change according to output, TDEE is the "multiplier" variable in the RMD file.
+               h4('To achieve your goal, the amount of calories you shall take is'),
+               verbatimTextOutput("GoalCalculation"), #change according to output
+               #h4('Your nutritions shall be distributed as below'),
+               #verbatimTextOutput(" "), #change according to output
+             ) # mainPanel
+             
+    )# Navbar 1, tabPanel
+    
+    
+  ) # navbarPage
 ) # fluidPage
 
+BMR <- function(gender,weight, height, age) {
+  if (gender == 'male'){
+    return(66 + (13.7*weight)+ 5*(height) - (6.8*age))
+  }
+  else if (gender == 'female'){
+    return(655 +(9.6*weight)+1.8*(height)-(4.7*age))
+  }
+}
+TDEE <- function(activity,b) {
+  if(activity == 'sedentary'){
+    b*1.2
+  }else if(activity == 'lightly_active'){
+    b*1.375
+  }else if(activity == 'moderately_active'){
+    b * 1.55
+  }else if(activity == 'very_active'){
+    b *1.725
+  }else if(activity == 'extra_active'){
+    b*1.9
+  }
+}
+
+GOAL_CAL <- function(goal,t) {
+  if(goal == 'lose_weight'){
+    t*0.9
+  }else if(goal == 'maintain_weight'){
+    t*1
+  }else if(goal == 'increase_weight'){
+    t*1.1
+  }
+}
+
+
+options(shiny.error = browser)
 
 # Define server function  
 server <- function(input, output) {
+  bmr <- reactive({BMR(input$gender,input$weight,input$height,input$age)})
+  output$BMRCalculation <- renderPrint(bmr())
   
+  tdee <- reactive({TDEE(input$activity,bmr())})
+  output$TDEECalculation <- renderPrint(tdee())
   
+  goal_cal <- reactive({GOAL_CAL(input$goal,tdee())})
+  output$GoalCalculation <- renderPrint(goal_cal())
   
 } # server
 
