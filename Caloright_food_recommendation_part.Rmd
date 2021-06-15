@@ -144,20 +144,38 @@ my_nurients_data = my_nurients_data %>%  mutate(Calories = replace(Calories,Calo
                                                Fiber=replace(Fiber,Fiber==235.0,0.0))
 
 
-## nutrients with maximum micronutrients
-max_nutrients = my_nurients_data
+## Calculating Nutrients per gram
 
-max_carbs = max(max_nutrients$Carbs)
-highest_carbs= max_nutrients %>% filter(Carbs == max_carbs) %>% select(Food,Carbs,Protein,Fat,Grams)
+```{r}
+nutrients_per_gram = my_nurients_data %>% mutate(carbs_per_gram = Carbs/Grams,
+                                                 protein_per_gram = Protein/Grams,
+                                                 fat_per_gram = Fat/Grams) %>% 
+  select(Food,Grams,Carbs,Protein,Fat,carbs_per_gram,protein_per_gram,fat_per_gram)
+#nutrients_per_gram
+
+max_nutrients = nutrients_per_gram
+
+max_carbs = max(max_nutrients$carbs_per_gram)
+max_carbs
+highest_carbs= max_nutrients %>% filter(carbs_per_gram == max_carbs) %>% select(Food,Grams,Carbs,Protein,Fat,carbs_per_gram,protein_per_gram,fat_per_gram)
+
 highest_carbs # food with max carbs
 
-max_protein = max(max_nutrients$Protein)
-highest_protein= max_nutrients %>% filter(Protein == max_protein) %>% select(Food,Carbs,Protein,Fat,Grams)
+#-------------------------------------------------------------------------------------------------
+
+max_protein = max(max_nutrients$protein_per_gram)
+highest_protein= max_nutrients %>% filter(protein_per_gram == max_protein) %>% select(Food,Grams,Carbs,Protein,Fat,carbs_per_gram,protein_per_gram,fat_per_gram)
+
 highest_protein # food with max protein
 
-max_fat = max(max_nutrients$Fat)
-highest_fat= max_nutrients %>% filter(Fat == max_fat) %>% select(Food,Carbs,Protein,Fat,Grams)
+#---------------------------------------------------------------------------------------------------
+
+max_fat = max(max_nutrients$fat_per_gram)
+highest_fat= max_nutrients %>% filter(fat_per_gram == max_fat) %>% select(Food,Grams,Carbs,Protein,Fat,carbs_per_gram,protein_per_gram,fat_per_gram)
+
 highest_fat # food with max fat
+
+```
 
 library(dplyr)
 category_data = unique(my_nurients_data$Category)  ## finding diffrent categories
