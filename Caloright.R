@@ -13,11 +13,11 @@ ui <- fluidPage(
     
     "Caloright",
     tabPanel("Introduction",
-    div(img(src="1.png"),style="text-align: center;"),
-    br(),
-    div(img(src="2.png"),style="text-align: center;"),
-    br(),
-    div(img(src="3.png"),style="text-align: center;"),
+             div(img(src="1.png"),style="text-align: center;"),
+             br(),
+             div(img(src="2.png"),style="text-align: center;"),
+             br(),
+             div(img(src="3.png"),style="text-align: center;"),
     ),
     tabPanel("Calories & Nutrition",
              sidebarPanel(
@@ -53,12 +53,24 @@ ui <- fluidPage(
                h4('Your nutritions shall be distributed as below'),
                plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
-                       
+             
     )# Navbar 1, tabPanel
     ,
     tabPanel("Food Search")
     ,#Navbar 2, tabPanel 
-    tabPanel("Food Recommendation") #Navbar 2, tabPanel 
+    tabPanel("Food Recommendation",
+             h4("The food with highest carbohydrate is"),
+             verbatimTextOutput("highest_carbs"),
+             
+             h4("The food with highest protein is"),
+             verbatimTextOutput("highest_protein"),
+             
+             h4("The food with highest fat is"),
+             verbatimTextOutput("highest_fat"),
+             
+             verbatimTextOutput(recommended_food)
+             
+             )#Navbar 2, tabPanel 
   ) # navbarPage
 )# fluidPage
 
@@ -104,8 +116,8 @@ GOAL_NUTRIENTS <- function(goal,gc) {
     data <- data.frame(
       category=c("Carbohydrates", "Protein", "Fat"),
       count=c(carbs_cal,protein_cal,fat_cal)
-      )
-      
+    )
+    
     # Compute fraction
     data$fraction <- data$count / sum(data$count)
     
@@ -232,8 +244,45 @@ server <- function(input, output) {
   goal_cal <- reactive({GOAL_CAL(input$goal,tdee())})
   output$GoalCalculation <- renderPrint(goal_cal())
   
-  output$GoalNutrients <- renderPlot(GOAL_NUTRIENTS(input$goal,goal_cal()),bg="transparent")
+  goal_nutrients <- reactive({GOAL_NUTRIENTS(input$goal,goal_cal())})
+  output$GoalNutrients <- renderPlot(goal_nutrients(),bg="transparent")
   
+  library(tidyverse)
+  my_nurients_data = read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
+  
+  nutrients_per_100gram = my_nurients_data %>%mutate(
+    carbs_per_100gram = 100*Carbs/Grams,
+    protein_per_100gram = 100*Protein/Grams,
+    fat_per_100gram = 100*Fat/Grams
+    ) %>% select(
+      Food,Grams,Carbs,Protein,Fat,carbs_per_100gram,
+      protein_per_100gram,fat_per_100gram)
+  #nutrients_per_gram
+  max_nutrients = nutrients_per_100gram
+  max_carbs = max(max_nutrients$carbs_per_100gram)
+  max_carbs
+  highest_carbs= max_nutrients %>% filter(
+    carbs_per_100gram == max_carbs
+    ) %>% select(
+      Food,
+      carbs_per_100gram,protein_per_100gram,fat_per_100gram)
+  output$highest_carbs <- renderPrint(highest_carbs) # food with max carbs
+  
+  max_protein = max(max_nutrients$protein_per_100gram)
+  highest_protein= max_nutrients %>% filter(
+    protein_per_100gram == max_protein
+    ) %>% select(
+      Food,
+      carbs_per_100gram,protein_per_100gram,fat_per_100gram)
+  output$highest_protein <- renderPrint(highest_protein) # food with max protein
+  
+  max_fat = max(max_nutrients$fat_per_100gram)
+  highest_fat= max_nutrients %>% filter(
+    fat_per_100gram == max_fat
+    ) %>% select(
+      Food,
+      carbs_per_100gram,protein_per_100gram,fat_per_100gram)
+  output$highest_fat <- renderPrint(highest_fat) # food with max fat
 } # server
 
 
