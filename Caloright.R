@@ -10,6 +10,9 @@ ui <- fluidPage(
   navbarPage(
     # theme = "cerulean",  # <--- To use a theme, uncomment this
     "Caloright",
+    tabPanel("Introduction",
+    div(img(src="1.png"),style="text-align: center;")
+    ),
     tabPanel("Calories & Nutrition",
              sidebarPanel(
                tags$h3("Input:"),
@@ -20,15 +23,16 @@ ui <- fluidPage(
                            c("Male" = "male",
                              "Female" = "female")),
                selectInput('activity','Activity level',
-                           c("Sedentary" = "sedentary",
-                             "Lightly Active" = "lightly_active",
-                             "Moderately Active" = "moderately_active",
-                             "Very Active" = "very_active",
-                             "Extra Active" = "extra_active")),
+                           c("Sedentary (Little or no exercise, desk job)" = "sedentary",
+                             "Lightly Active (Exercise 1-2 days per week)" = "lightly_active",
+                             "Moderately Active (Exercise 3-5 days per week)" = "moderately_active",
+                             "Very Active (Exercise 6-7 days per week)" = "very_active",
+                             "Athlete (Exercise 2x per day) " = "extra_active")),
                selectInput('goal','What is your goal?',
                            c("Lose Weight" = "lose_weight",
                              "Maintain Weight" = "maintain_weight",
                              "Gain Weight" = "gain_weight")),
+               h5("Press submit after input and selection."),
                submitButton('Submit')
              ), # sidebarPanel
              mainPanel(
@@ -41,14 +45,14 @@ ui <- fluidPage(
                h4('To achieve your goal, the amount of calories you shall take is'),
                verbatimTextOutput("GoalCalculation"), #change according to output
                h4('Your nutritions shall be distributed as below'),
-               plotOutput("GoalNutrients"), #change according to output
+               plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
              
     )# Navbar 1, tabPanel
     
     
   ) # navbarPage
-) # fluidPage
+)# fluidPage
 
 BMR <- function(gender,weight, height, age) {
   if (gender == 'male'){
