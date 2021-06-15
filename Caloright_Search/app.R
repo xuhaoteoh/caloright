@@ -31,11 +31,8 @@ shinyApp(
                    tabPanel("Full File Table",
                             tableOutput("contents")),
                    tabPanel("Nutrition Table",
-                            h4("Table"),
+                            h4("Search Result Table"),
                             tableOutput("table"),
-                            h4("Verbatim text output"),
-                            #verbatimTextOutput("txtout"),
-
                    ),
                    tabPanel("Food Description",
                             actionButton("searchwiki", "Search Wiki", class = "btn-primary"),),
