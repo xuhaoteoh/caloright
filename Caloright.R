@@ -2,7 +2,7 @@
 
 library(shiny)
 library(shinythemes)
-
+library(ggplot2)
 
 # Define UI
 ui <- fluidPage(
@@ -28,7 +28,7 @@ ui <- fluidPage(
                selectInput('goal','What is your goal?',
                            c("Lose Weight" = "lose_weight",
                              "Maintain Weight" = "maintain_weight",
-                             "Increase Weight" = "increase_weight")),
+                             "Gain Weight" = "gain_weight")),
                submitButton('Submit')
              ), # sidebarPanel
              mainPanel(
@@ -40,8 +40,8 @@ ui <- fluidPage(
                verbatimTextOutput("TDEECalculation"), #change according to output, TDEE is the "multiplier" variable in the RMD file.
                h4('To achieve your goal, the amount of calories you shall take is'),
                verbatimTextOutput("GoalCalculation"), #change according to output
-               #h4('Your nutritions shall be distributed as below'),
-               #verbatimTextOutput(" "), #change according to output
+               h4('Your nutritions shall be distributed as below'),
+               plotOutput("GoalNutrients"), #change according to output
              ) # mainPanel
              
     )# Navbar 1, tabPanel
@@ -77,8 +77,131 @@ GOAL_CAL <- function(goal,t) {
     t*0.9
   }else if(goal == 'maintain_weight'){
     t*1
-  }else if(goal == 'increase_weight'){
+  }else if(goal == 'gain_weight'){
     t*1.1
+  }
+}
+
+GOAL_NUTRIENTS <- function(goal,gc) {
+  if(goal == 'lose_weight'){
+    
+    carbs_cal = (40/100)*gc
+    protein_cal = (30/100)*gc
+    fat_cal = (30/100)*gc
+    
+    data <- data.frame(
+      category=c("Carbohydrates", "Protein", "Fat"),
+      count=c(carbs_cal,protein_cal,fat_cal)
+      )
+      
+    # Compute fraction
+    data$fraction <- data$count / sum(data$count)
+    
+    # Compute the cumulative percentages (top of each rectangle)
+    data$ymax <- cumsum(data$fraction)
+    
+    # Compute percentage
+    data$percentage <- data$fraction*100
+    
+    # Compute the bottom of each rectangle
+    data$ymin <- c(0, head(data$ymax, n=-1))
+    
+    # Compute label position
+    data$labelPosition <- (data$ymax + data$ymin) / 2
+    
+    # Compute a good label
+    data$label <- paste0(data$category, " (", data$percentage, "%)", "\n Calories: ", data$count)
+    
+    # Make the plot
+    ggplot(data, aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=category)) +
+      geom_rect() +
+      geom_label( x=3.5, aes(y=labelPosition, label=label), size=6) +
+      scale_fill_brewer(palette="Pastel1") +
+      coord_polar(theta="y") +
+      xlim(c(2, 4)) +
+      theme_void() +
+      theme(legend.position = "none")
+    
+  }else if(goal == 'maintain_weight'){
+    
+    carbs_cal = (50/100)*gc
+    protein_cal = (30/100)*gc
+    fat_cal = (20/100)*gc
+    
+    data <- data.frame(
+      category=c("Carbohydrates", "Protein", "Fat"),
+      count=c(carbs_cal,protein_cal,fat_cal)
+    )
+    
+    # Compute fraction
+    data$fraction <- data$count / sum(data$count)
+    
+    # Compute the cumulative percentages (top of each rectangle)
+    data$ymax <- cumsum(data$fraction)
+    
+    # Compute percentage
+    data$percentage <- data$fraction*100
+    
+    # Compute the bottom of each rectangle
+    data$ymin <- c(0, head(data$ymax, n=-1))
+    
+    # Compute label position
+    data$labelPosition <- (data$ymax + data$ymin) / 2
+    
+    # Compute a good label
+    data$label <- paste0(data$category, " (", data$percentage, "%)", "\n Calories: ", data$count)
+    
+    # Make the plot
+    ggplot(data, aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=category)) +
+      geom_rect() +
+      geom_label( x=3.5, aes(y=labelPosition, label=label), size=6) +
+      scale_fill_brewer(palette="Pastel1") +
+      coord_polar(theta="y") +
+      xlim(c(2, 4)) +
+      theme_void() +
+      theme(legend.position = "none")
+    
+    # return("50% Carbohydrates, 30% Protein, 20% Fat")
+  }else if(goal == 'gain_weight'){
+    
+    carbs_cal = (55/100)*gc
+    protein_cal = (30/100)*gc
+    fat_cal = (15/100)*gc
+    
+    data <- data.frame(
+      category=c("Carbohydrates", "Protein", "Fat"),
+      count=c(carbs_cal,protein_cal,fat_cal)
+    )
+    
+    # Compute fraction
+    data$fraction <- data$count / sum(data$count)
+    
+    # Compute the cumulative percentages (top of each rectangle)
+    data$ymax <- cumsum(data$fraction)
+    
+    # Compute percentage
+    data$percentage <- data$fraction*100
+    
+    # Compute the bottom of each rectangle
+    data$ymin <- c(0, head(data$ymax, n=-1))
+    
+    # Compute label position
+    data$labelPosition <- (data$ymax + data$ymin) / 2
+    
+    # Compute a good label
+    data$label <- paste0(data$category, " (", data$percentage, "%)", "\n Calories: ", data$count)
+    
+    # Make the plot
+    ggplot(data, aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=category)) +
+      geom_rect() +
+      geom_label( x=3.5, aes(y=labelPosition, label=label), size=6) +
+      scale_fill_brewer(palette="Pastel1") +
+      coord_polar(theta="y") +
+      xlim(c(2, 4)) +
+      theme_void() +
+      theme(legend.position = "none")
+    
+    #return("55% Carbohydrates, 30% Protein, 15% Fat")
   }
 }
 
@@ -95,6 +218,8 @@ server <- function(input, output) {
   
   goal_cal <- reactive({GOAL_CAL(input$goal,tdee())})
   output$GoalCalculation <- renderPrint(goal_cal())
+  
+  output$GoalNutrients <- renderPlot(GOAL_NUTRIENTS(input$goal,goal_cal()),bg="transparent")
   
 } # server
 
