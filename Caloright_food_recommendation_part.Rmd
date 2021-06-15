@@ -154,13 +154,13 @@ cal_data
 ```{r}
 
 
-c = cal_data %>% filter(Carbs<=x$carbs_cal) %>% select(Food,Carbs) %>% arrange(desc(Carbs))
+c = cal_data %>% filter(Carbs<=micronutrients$carbs_cal) %>% select(Food,Carbs) %>% arrange(desc(Carbs))
 c1 = head(c,1)
 
-p = cal_data %>% filter(Protein<=x$protein_cal) %>% select(Food,Protein) %>% arrange(desc(Protein))
+p = cal_data %>% filter(Protein<=micronutrients$protein_cal) %>% select(Food,Protein) %>% arrange(desc(Protein))
 p1=head(p,1)
 
-f = cal_data %>% filter(Fat<=x$fat_cal) %>% select(Food,Fat) %>% arrange(desc(Fat))
+f = cal_data %>% filter(Fat<=micronutrients$fat_cal) %>% select(Food,Fat) %>% arrange(desc(Fat))
 f1 =head(f,1)
 
 recommended_food = data.frame("Carbs"=c1$Food,"prot"=p1$Food,"fat"=f1$Food) 
