@@ -125,7 +125,7 @@ shinyApp(
         geom_rect() +
         coord_polar(theta="y") + # Try to remove that to understand how the chart is built initially
         xlim(c(2, 4)) + # Try to remove that to see how to make a pie chart
-        labs(title = "Top Six Componets")
+        labs(title = paste("Top Six Componets in " , input$FoodName))
     })
   }
 )
