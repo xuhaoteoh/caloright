@@ -126,7 +126,7 @@ goal_cal = function(goal){
   }
   
 }
-micronutrients = goal_cal("keto diet")
+micronutrients = goal_cal("Muscle gain")
 micronutrients
 
 ```
@@ -135,6 +135,29 @@ micronutrients
 ```{r}
 my_nurients_data = read.csv("C:/Users/SAKSHI/Documents/R/WQD7001_Project/nutrients_cleaned.csv",stringsAsFactors = FALSE)
 
+## error in the values of oyster
+my_nurients_data = my_nurients_data %>%  mutate(Calories = replace(Calories,Calories==231,458),
+                                               Carbs = replace(Carbs,Carbs==236,28),
+                                               Protein = replace(Protein,Protein == 232,21),
+                                               Fat = replace(Fat,Fat==233,23),
+                                               Sat.Fat = replace(Sat.Fat,Sat.Fat==234,8),
+                                               Fiber=replace(Fiber,Fiber==235.0,0.0))
+
+
+## nutrients with maximum micronutrients
+max_nutrients = my_nurients_data
+
+max_carbs = max(max_nutrients$Carbs)
+highest_carbs= max_nutrients %>% filter(Carbs == max_carbs) %>% select(Food,Carbs,Protein,Fat,Grams)
+highest_carbs # food with max carbs
+
+max_protein = max(max_nutrients$Protein)
+highest_protein= max_nutrients %>% filter(Protein == max_protein) %>% select(Food,Carbs,Protein,Fat,Grams)
+highest_protein # food with max protein
+
+max_fat = max(max_nutrients$Fat)
+highest_fat= max_nutrients %>% filter(Fat == max_fat) %>% select(Food,Carbs,Protein,Fat,Grams)
+highest_fat # food with max fat
 
 library(dplyr)
 category_data = unique(my_nurients_data$Category)  ## finding diffrent categories
@@ -157,11 +180,16 @@ cal_data
 c = cal_data %>% filter(Carbs<=micronutrients$carbs_cal) %>% select(Food,Carbs) %>% arrange(desc(Carbs))
 c1 = head(c,1)
 
+
 p = cal_data %>% filter(Protein<=micronutrients$protein_cal) %>% select(Food,Protein) %>% arrange(desc(Protein))
 p1=head(p,1)
 
+
+
 f = cal_data %>% filter(Fat<=micronutrients$fat_cal) %>% select(Food,Fat) %>% arrange(desc(Fat))
 f1 =head(f,1)
+
+
 
 recommended_food = data.frame("Carbs"=c1$Food,"prot"=p1$Food,"fat"=f1$Food) 
 recommended_food
