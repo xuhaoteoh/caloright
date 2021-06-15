@@ -53,10 +53,12 @@ ui <- fluidPage(
                h4('Your nutritions shall be distributed as below'),
                plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
-             
+                       
     )# Navbar 1, tabPanel
-    
-    
+    ,
+    tabPanel("Food Search")
+    ,#Navbar 2, tabPanel 
+    tabPanel("Food Recommendation") #Navbar 2, tabPanel 
   ) # navbarPage
 )# fluidPage
 
