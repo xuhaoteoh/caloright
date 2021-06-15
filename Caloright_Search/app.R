@@ -91,17 +91,41 @@ shinyApp(
       fileName <- read.csv(inFile$datapath, header = input$header)
       selected<- fileName[which(fileName$name==input$FoodName), ]
       if (is.null(selected)) return()
-      library(fmsb)
-      selected[is.na(selected)] <- 0
-      selected <- selected[, colSums(selected != 0) > 0]
-      #define Min-Max normalization function
-      #min_max_norm <- function(x) {
-      #  (x - min(x)) / (max(x) - min(x))
-      #}
-      #apply Min-Max normalization to first four columns in iris dataset
-      selected <- as.data.frame(lapply(selected[2:ncol(selected)], min_max_norm))
-      #radarchart(selected[,4:ncol(selected)])
-      radarchart(selected[,4:8])
+      
+      df2 <- data.frame(t(selected[-1]))
+      
+      colnames(df2) <- "count"
+      df2[is.na(df2)] <- 0
+      
+      df2 <- cbind(category = rownames(df2), df2)
+      rownames(df2) <- 1:nrow(df2)
+      
+      
+      data <- df2[c(-1,-2,-3,-4),]
+      
+      
+      # load library
+      library(ggplot2)
+      
+      # Compute percentages
+      
+      data$count = as.numeric(as.character(data$count))
+      data <- data[order(data$count,decreasing = TRUE),]
+      data <- data[(1:6),]
+      data$fraction = data$count / sum(data$count)
+      
+      # Compute the cumulative percentages (top of each rectangle)
+      data$ymax = cumsum(data$fraction)
+      
+      # Compute the bottom of each rectangle
+      data$ymin = c(0, head(data$ymax, n=-1))
+      
+      # Make the plot
+      ggplot(data, aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=category)) +
+        geom_rect() +
+        coord_polar(theta="y") + # Try to remove that to understand how the chart is built initially
+        xlim(c(2, 4)) + # Try to remove that to see how to make a pie chart
+        labs(title = "Top Six Componets")
     })
   }
 )
