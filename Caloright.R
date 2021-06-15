@@ -4,40 +4,26 @@ library(shiny)
 library(shinythemes)
 library(ggplot2)
 
-
-my_nurients_data = read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
-
-library(dplyr)
-category_data = unique(my_nurients_data$Category)  ## finding different categories
-
-
-## convering grams into calorrie for protein,carbs,fat
-cal_dat = my_nurients_data %>% mutate(Protein = 4*Protein , Carbs = 4*Carbs, Fat = 9*Fat) %>% select(Food,Calories,Grams,Protein,Carbs,Fat,Category)
-cal_dat
-
-## sum of each nutrients
-total_nutrients = cal_dat %>% group_by(Category) %>% summarise(sum(Grams),sum(Calories),sum(Protein),sum(Fat),sum(Carbs))
-
-#sort food category based on total calories
-
-total_nutrients <- total_nutrients[order(-total_nutrients$`sum(Calories)`), ]
-total_nutrients
-
-
 # Define UI
 ui <- fluidPage(
-  theme = shinytheme("cyborg"),
+  shinythemes::themeSelector(),
+  #theme = shinytheme("cyborg"),
   navbarPage(
     # theme = "cerulean",  # <--- To use a theme, uncomment this
+    
     "Caloright",
     tabPanel("Introduction",
-    div(img(src="1.png"),style="text-align: center;")
+    div(img(src="1.png"),style="text-align: center;"),
+    br(),
+    div(img(src="2.png"),style="text-align: center;"),
+    br(),
+    div(img(src="3.png"),style="text-align: center;"),
     ),
     tabPanel("Calories & Nutrition",
              sidebarPanel(
                tags$h3("Input:"),
-               numericInput('weight', 'Weight (kg):', 55, min = 40, max = 300, step = 1),
-               numericInput('height', 'Height (cm):', 150, min = 80, max = 200, step = 1),
+               numericInput('weight', 'Weight (kg):', 55, min = 40, max = 300, step = 0.1),
+               numericInput('height', 'Height (cm):', 150, min = 80, max = 200, step = 0.1),
                numericInput('age', 'Age:', 20, min = 1, max = 100, step = 1),
                selectInput('gender','Gender:',
                            c("Male" = "male",
@@ -68,16 +54,8 @@ ui <- fluidPage(
                plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
              
-    ),# Navbar 1, tabPanel
-    tabPanel("Food Search", 
-             
-             selectizeInput(
-               'food_id', '1) Food Category', choices = total_nutrients$Category,
-               options = list(
-                 placeholder = 'Type to search for ingredient',
-                 onInitialize = I('function() { this.setValue(""); }')
-               )
-             ))
+    )# Navbar 1, tabPanel
+    
     
   ) # navbarPage
 )# fluidPage
@@ -109,7 +87,7 @@ GOAL_CAL <- function(goal,t) {
     t*0.9
   }else if(goal == 'maintain_weight'){
     t*1
-  }else if(goal == 'gain_weight'){
+  }else{
     t*1.1
   }
 }
@@ -235,6 +213,7 @@ GOAL_NUTRIENTS <- function(goal,gc) {
     
     #return("55% Carbohydrates, 30% Protein, 15% Fat")
   }
+  
 }
 
 
