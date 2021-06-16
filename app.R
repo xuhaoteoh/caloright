@@ -97,8 +97,8 @@ ui <- fluidPage(
              )
     )#Navbar 2, tabPanel
     , 
-    tabPanel("Food Recommended!",
-             h4("The outcome of descriptive analysis is to find out the mostrecommended for each category : Carbohydrate,Protein & Fat."),
+    tabPanel("Food with the Highest Nutritional Value",
+             h4(tags$b("The outcome of descriptive analysis is to find out the most recommended for each category : Carbohydrate,Protein & Fat.")),
              
              h4("The food with highest carbohydrate is"),
              tableOutput("highest_carbs"),
@@ -111,7 +111,7 @@ ui <- fluidPage(
              h4("The food with highest fat is"),
              tableOutput("highest_fat"),
              plotOutput("highest_fat_donut")
-             ) #Navbar 2, tabPanel 
+    ) #Navbar 2, tabPanel 
   ) # navbarPage
 )# fluidPage
 
@@ -406,7 +406,7 @@ server <- function(input, output) {
       coord_polar(theta="y") + # Try to remove that to understand how the chart is built initially
       xlim(c(2, 4)) + # Try to remove that to see how to make a pie chart
       labs(title = paste("Top Six Componets in ",input$FoodName))
-   })
+  })
   my_nurients_data = read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
   
   #nutrients_per_gram
