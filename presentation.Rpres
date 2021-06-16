@@ -1,0 +1,69 @@
+Group 8 Caloright: An Interactive Food and Nutritional Dashboard
+========================================================
+author: 1) Teoh Xu Hao  2) Sun Geng 3) Muhamad Haziq Fuad 4) Sakshi Maurya
+date: 17 June 2021
+autosize: true
+
+Introduction
+========================================================
+
+**Problem Statement**
+
+Besides the pandemic situation that is storming the whole world right, there is an another existing problem that is faced by most people which is unhealthy diet due to incorrect nutrition intake. The key questions arising from this are: 
+
+1) How much calories should you consume every day?
+
+2) How should you distribute your macronutrients?
+
+3) What is the recommended food should you eat?
+
+**Data Source**
+
+The data used in developing this data product was extracted from kaggle which was originated from United States Dept. of Agricultue (USDA) sources. The data source can be found in this [**link**](https://www.kaggle.com/niharika41298/nutrition-details-for-most-common-foods). Below is the snippet of the data:
+
+```{r, echo=FALSE}
+
+df <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
+
+head(df)
+
+```
+
+
+Features
+========================================================
+
+**1) Basal Metabolic Rate (BMR) calculator** - A calorie calculator that can assist to estimate the recommended amount of calories needed to consume daily.
+
+**2) Total Daily Energy Expenditure (TDEE) calculator** - Estimation of how many calories you burn per day when exercise is taken into account.
+
+**3) Calorie Required calculator** - Calculation of amount of calorie required  for an individual to achieve a certain body weight goal.
+
+
+Features
+========================================================
+
+**4) Food Search Engine**
+
+- Search for your favorite foods
+- Obtain the nutritional information about it
+
+**5) Food Recommendation**
+
+- Recommend the best food product for your diet based on your goals and amount of calories intake
+
+Preview
+======================================================== 
+Short snippet of the application!
+
+**1) Nutritional Intake Calculation**
+
+![pic1](foodie.gif)
+
+***
+
+Short snippet of the application!
+
+**2) Food recommendation**
+
+![pic2](spaghetti.gif)
