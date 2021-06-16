@@ -309,7 +309,7 @@ server <- function(input, output) {
     if (is.null(fileName)) return()
     inFile <- input$file1
     fileName <- read.csv(inFile$datapath, header = input$header)
-    fileName[which(fileName$name==input$FoodName), ]
+    fileName[which(fileName$Food==input$FoodName), ]
   })
   
   output$plot <- renderPlot({
