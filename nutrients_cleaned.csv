@@ -81,7 +81,7 @@ Halibut,3 1/2 oz.,100,182,26,8,0,0,0,"Fish, Seafood"
 Herring,1 small,100,211,22,13,0,0,0,"Fish, Seafood"
 Lobster,aver.,100,92,18,1,0,0,0,"Fish, Seafood"
 Mackerel,3 oz.,85,155,18,9,0,0,0,"Fish, Seafood"
-Oysters,6-8 med.,100,199,9,13,3.2,0,12,"Fish, Seafood"
+Oysters,6-8 med.,230,458,21,29.9,7.36,0,27.6,"Fish, Seafood"
 Oyster stew,1 cup,85,125,19,6,1,0,0,"Fish, Seafood"
 Salmon,3 oz.,85,120,17,5,1,0,0,"Fish, Seafood"
 Sardines,3 oz.,85,180,22,9,4,0,0,"Fish, Seafood"
@@ -183,7 +183,7 @@ Figs,2,42,120,2,0,0,1.9,30,Fruits A-F
 figs Canned with syrup ,3,115,130,1,0,0,1,32,Fruits A-F
 "Fruit cocktail, canned",1 cup,256,195,1,0,0,0.5,50,Fruits A-F
 Grapefruit sections,1 cup,250,170,1,0,0,0.5,44,Fruits G-P
-"Grapefruit, fresh, 5"" diameter",01-Feb,285,50,1,0,0,1,14,Fruits G-P
+"Grapefruit, fresh, 5"" diameter",1-Feb,285,50,1,0,0,1,14,Fruits G-P
 Grapefruit juice,1 cup,250,100,1,0,0,1,24,Fruits G-P
 Grapes,1 cup,153,70,1,0,0,0.8,16,Fruits G-P
 "European, as Muscat, Tokay",1 cup,160,100,1,0,0,0.7,26,Fruits G-P
