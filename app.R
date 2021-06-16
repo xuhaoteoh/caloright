@@ -69,9 +69,9 @@ ui <- fluidPage(
                checkboxInput("header", "Header", TRUE),
                textInput("FoodName", "Please enter the name of the food:", "general"),
                tags$h5("This application shows your the nutrients and calories of your food."),
-               actionButton("search", "Search", class = "btn-primary"),
-               #plotOutput("plot"),
-               #tableOutput("table"),
+               submitButton('Search'),
+               #actionButton("search", "Search", class = "btn-primary"),
+
              ),
              mainPanel(
                h5('The food that is selected is'),
@@ -84,7 +84,11 @@ ui <- fluidPage(
                           tableOutput("table"),
                  ),
                  tabPanel("Food Description",
-                          actionButton("searchwiki", "Search Wiki", class = "btn-primary"),),
+                          #submitButton('Search'),
+                          uiOutput("url"),
+                          htmlOutput("frame"),),
+                          #actionButton("searchwiki", "Search Wiki", class = "btn-primary"),),
+                          #submitButton("searchwiki"),),
                  tabPanel("Nutrition Distribution Graph",
                           plotOutput("plot"))
                )
@@ -285,14 +289,20 @@ server <- function(input, output) {
   
   v <- reactiveValues(data = NULL)
   
-  observeEvent(input$search, {
-    v$data <- head(cars, 4)
-  })
   
-  observeEvent(input$searchwiki, {
-    if (is.null(input$FoodName)) return()
-    message("Opening Wikipedia search for \"", input$FoodName, "\" in browser")
-    browseURL(paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName)))
+  #observeEvent(input$searchwiki, {
+  #  if (is.null(input$FoodName)) return()
+  #  message("Opening Wikipedia search for \"", input$FoodName, "\" in browser")
+  #  browseURL(paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName)))
+  #})
+  
+  output$url <-renderUI(a(href=paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName)),"Show WikiPedia Page in your Browser",target="_blank"))
+  
+  output$frame <- renderUI({
+    test <- paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName))
+    my_test <- tags$iframe(src=test, height=600, width=535)
+    print(my_test)
+    my_test
   })
   
   output$table <- renderTable({
