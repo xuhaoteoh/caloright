@@ -179,7 +179,13 @@ highest_fat # food with max fat
 
 library(dplyr)
 category_data = unique(my_nurients_data$Category)  ## finding diffrent categories
+## displaying food according to category
 
+for (i in 1:length(category_data)) {
+  cat_food = my_nurients_data %>% filter(Category == category_data[i]) %>% select(Food,Calories,Grams,Protein,Carbs,Fat,Category)
+  print(cat_food)
+ 
+}
 
 ## convering grams into calories for protein,carbs,fat
 
