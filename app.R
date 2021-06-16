@@ -329,14 +329,14 @@ server <- function(input, output) {
   
   output$contents <- renderTable({
     
-    inFile <- input$file1
-    
-    if (is.null(inFile)){
-      return(NULL)
-    }else{
-      fileName <- read.csv(inFile$datapath, header = input$header)
-    }
-    
+#    inFile <- input$file1
+#    
+#    if (is.null(inFile)){
+#      return(NULL)
+#    }else{
+#      fileName <- read.csv(inFile$datapath, header = input$header)
+#    }
+    fileName <- read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
     head(fileName)
   })
   
@@ -364,15 +364,17 @@ server <- function(input, output) {
   
   output$table <- renderTable({
     if (is.null(fileName)) return()
-    inFile <- input$file1
-    fileName <- read.csv(inFile$datapath, header = input$header)
+    #inFile <- input$file1
+    #fileName <- read.csv(inFile$datapath, header = input$header)
+    fileName <- read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
     fileName[which(fileName$Food==input$FoodName), ]
   })
   
   output$plot <- renderPlot({
     if (is.null(input$FoodName)) return()
-    inFile <- input$file1
-    fileName <- read.csv(inFile$datapath, header = input$header)
+    #inFile <- input$file1
+    #fileName <- read.csv(inFile$datapath, header = input$header)
+    fileName <- read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
     selected<- fileName[which(fileName$Food==input$FoodName), ]
     if (is.null(selected)) return()
     
@@ -405,7 +407,10 @@ server <- function(input, output) {
       geom_rect() +
       coord_polar(theta="y") + # Try to remove that to understand how the chart is built initially
       xlim(c(2, 4)) + # Try to remove that to see how to make a pie chart
-      labs(title = paste("Top Six Componets in ",input$FoodName))
+      labs(title = paste("Top Six Componets in ",input$FoodName)) + 
+      theme(axis.text = element_blank(),
+            axis.ticks = element_blank(),
+            panel.grid  = element_blank())
   })
   my_nurients_data = read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
   
