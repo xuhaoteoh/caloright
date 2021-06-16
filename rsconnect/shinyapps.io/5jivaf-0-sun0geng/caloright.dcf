@@ -1,0 +1,14 @@
+name: caloright
+title: caloright
+username:
+account: 5jivaf-0-sun0geng
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4278359
+bundleId: 4721604
+url: https://5jivaf-0-sun0geng.shinyapps.io/caloright/
+when: 1623823897.29391
+lastSyncTime: 1623823897.29429
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Caloright_food_recommendation_part.Rmd|Caloright_Search/app.R|Caloright.R|Search Function.mov|wqd7001-p0-search-sort.ipynb|wqd7001-p1-load-eda.ipynb|wqd7001-p2-clustering-recommendation.ipynb|wqd7001-p3-healthrecord.ipynb|wqd7001-p4-kmeansrecommendation.ipynb
