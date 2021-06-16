@@ -83,13 +83,14 @@ ui <- fluidPage(
                           h4("Search Result Table"),
                           tableOutput("table"),
                  ),
-                 tabPanel("Food Description",
+                 #tabPanel("Food Description",
                           #submitButton('Search'),
-                          uiOutput("url"),
-                          htmlOutput("frame"),),
+                          #uiOutput("url"),
+                          #htmlOutput("frame"),),
                           #actionButton("searchwiki", "Search Wiki", class = "btn-primary"),),
                           #submitButton("searchwiki"),),
                  tabPanel("Nutrition Distribution Graph",
+                          uiOutput("url"),
                           plotOutput("plot"))
                )
              )
@@ -277,9 +278,12 @@ server <- function(input, output) {
     
     inFile <- input$file1
     
-    if (is.null(inFile))
+    if (is.null(inFile)){
       return(NULL)
-    fileName <- read.csv(inFile$datapath, header = input$header)
+    }else{
+      fileName <- read.csv(inFile$datapath, header = input$header)
+    }
+
     head(fileName)
   })
   
