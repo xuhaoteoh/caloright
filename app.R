@@ -332,7 +332,7 @@ server <- function(input, output) {
     rownames(df2) <- 1:nrow(df2)
     
     
-    data <- df2[c(-1,-2,-3,-9),]
+    data <- df2[c(-1,-2,-3,-6,-9),]
     
     
     # load library
