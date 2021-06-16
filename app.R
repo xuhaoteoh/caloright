@@ -1,5 +1,3 @@
-#Testing
-
 library(shiny)
 library(shinythemes)
 library(ggplot2)
@@ -7,11 +5,10 @@ library(tidyverse)
 
 # Define UI
 ui <- fluidPage(
-  shinythemes::themeSelector(),
-  #theme = shinytheme("cyborg"),
+  
+  theme = shinytheme("cerulean"),
   navbarPage(
-    # theme = "cerulean",  # <--- To use a theme, uncomment this
-    
+
     "Caloright",
     tabPanel("Introduction",
              div(img(src="1.png"),style="text-align: center;"),
@@ -60,14 +57,14 @@ ui <- fluidPage(
     tabPanel("Food Search",
              sidebarPanel(
                tags$h3("Input:"),
-#                fileInput("file1", "Choose CSV File",
-#                          accept = c(
-#                            "text/csv",
-#                            "text/comma-separated-values,text/plain",
-#                            ".csv")
-#                ),
+               #                fileInput("file1", "Choose CSV File",
+               #                          accept = c(
+               #                            "text/csv",
+               #                            "text/comma-separated-values,text/plain",
+               #                            ".csv")
+               #                ),
                tags$hr(),
-#                checkboxInput("header", "Header", TRUE),
+               #                checkboxInput("header", "Header", TRUE),
                textInput("FoodName", "Please enter the name of the food:", "Rice"),
                tags$h5("This application shows your the nutrients and calories of your food."),
                submitButton('Search'),
@@ -98,17 +95,17 @@ ui <- fluidPage(
     )#Navbar 2, tabPanel
     , 
     tabPanel("Food with the Highest Nutritional Value",
-             h4(tags$b("The outcome of descriptive analysis is to find out the most recommended for each category : Carbohydrate,Protein & Fat.")),
+             h4(tags$b("The outcome of descriptive analysis is to find out the most recommended for each category: Carbohydrate,Protein & Fat.")),
              
-             h4("The food with highest carbohydrate is"),
+             h5("The food with highest carbohydrate is"),
              tableOutput("highest_carbs"),
              plotOutput("highest_carbs_donut"),
              
-             h4("The food with highest protein is"),
+             h5("The food with highest protein is"),
              tableOutput("highest_protein"),
              plotOutput("highest_protein_donut"),
              
-             h4("The food with highest fat is"),
+             h5("The food with highest fat is"),
              tableOutput("highest_fat"),
              plotOutput("highest_fat_donut")
     ) #Navbar 2, tabPanel 
@@ -274,8 +271,8 @@ GOAL_NUTRIENTS <- function(goal,gc) {
 DONUT_GRAPH <- function(data_x){
   df3 <- data.frame(
     category=c("Carbohydrates", "Protein","Fat"),
-    count=c(data_x$carbs_per_100gram,data_x$protein_per_100gram,
-            data_x$fat_per_100gram)
+    count=c(data_x$Carbs_per_100gram,data_x$Protein_per_100gram,
+            data_x$Fat_per_100gram)
   )
   
   # Compute fraction
@@ -329,14 +326,14 @@ server <- function(input, output) {
   
   output$contents <- renderTable({
     
-#    inFile <- input$file1
-#    
-#    if (is.null(inFile)){
-#      return(NULL)
-#    }else{
-#      fileName <- read.csv(inFile$datapath, header = input$header)
-#    }
-    fileName <- read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
+    #    inFile <- input$file1
+    #    
+    #    if (is.null(inFile)){
+    #      return(NULL)
+    #    }else{
+    #      fileName <- read.csv(inFile$datapath, header = input$header)
+    #    }
+    fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
     head(fileName)
   })
   
@@ -366,7 +363,7 @@ server <- function(input, output) {
     if (is.null(fileName)) return()
     #inFile <- input$file1
     #fileName <- read.csv(inFile$datapath, header = input$header)
-    fileName <- read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
+    fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
     fileName[which(fileName$Food==input$FoodName), ]
   })
   
@@ -374,7 +371,7 @@ server <- function(input, output) {
     if (is.null(input$FoodName)) return()
     #inFile <- input$file1
     #fileName <- read.csv(inFile$datapath, header = input$header)
-    fileName <- read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
+    fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
     selected<- fileName[which(fileName$Food==input$FoodName), ]
     if (is.null(selected)) return()
     
@@ -407,36 +404,36 @@ server <- function(input, output) {
       geom_rect() +
       coord_polar(theta="y") + # Try to remove that to understand how the chart is built initially
       xlim(c(2, 4)) + # Try to remove that to see how to make a pie chart
-      labs(title = paste("Top Six Componets in ",input$FoodName)) + 
+      labs(title = paste("The Compositions of Nutrients in",input$FoodName)) + 
       theme(axis.text = element_blank(),
             axis.ticks = element_blank(),
             panel.grid  = element_blank())
   })
-  my_nurients_data = read.csv("D:/Teoh/Documents/R Programming/nutrients_cleaned.csv",stringsAsFactors = FALSE)
+  my_nurients_data = read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
   
   #nutrients_per_gram
   nutrients_per_100gram = my_nurients_data %>% mutate(
-    carbs_per_100gram = 100*Carbs/Grams,
-    protein_per_100gram = 100*Protein/Grams,
-    fat_per_100gram = 100*Fat/Grams) %>% select(
-      Food,Grams,Calories,Carbs,Protein,Fat,carbs_per_100gram,
-      protein_per_100gram,fat_per_100gram)
+    Carbs_per_100gram = 100*Carbs/Grams,
+    Protein_per_100gram = 100*Protein/Grams,
+    Fat_per_100gram = 100*Fat/Grams) %>% select(
+      Food,Grams,Calories,Carbs,Protein,Fat,Carbs_per_100gram,
+      Protein_per_100gram,Fat_per_100gram)
   
   max_nutrients = nutrients_per_100gram
-  max_carbs = max(max_nutrients$carbs_per_100gram)
+  max_carbs = max(max_nutrients$Carbs_per_100gram)
   
   highest_carbs= max_nutrients %>% filter(
-    carbs_per_100gram == max_carbs
+    Carbs_per_100gram == max_carbs
   ) %>% select(
-    Food,Carbs,Protein,Fat,
-    carbs_per_100gram,protein_per_100gram,fat_per_100gram)
+    Food,Calories,Carbs,Protein,Fat,
+    Carbs_per_100gram,Protein_per_100gram,Fat_per_100gram)
   #output$highest_carbs <- renderPrint(highest_carbs) # food with max carbs
   
   output$highest_carbs <- renderTable(highest_carbs)
   
   highest_nut_carbs <- data.frame(
     category=c("Carbohydrates", "Protein"),
-    count=c(highest_carbs$carbs_per_100gram,highest_carbs$protein_per_100gram)
+    count=c(highest_carbs$Carbs_per_100gram,highest_carbs$Protein_per_100gram)
   )
   
   # Compute fraction
@@ -467,28 +464,28 @@ server <- function(input, output) {
     coord_polar(theta="y") +
     xlim(c(2, 4)) +
     theme_void() +
-    theme(legend.position = "none")
+    theme(legend.position = "none") 
   
   output$highest_carbs_donut <- renderPlot(highest_carbs_donutplot)
   
-  max_protein = max(max_nutrients$protein_per_100gram)
+  max_protein = max(max_nutrients$Protein_per_100gram)
   highest_protein= max_nutrients %>% filter(
-    protein_per_100gram == max_protein
+    Protein_per_100gram == max_protein
   ) %>% select(
-    Food,Carbs,Protein,Fat,
-    carbs_per_100gram,protein_per_100gram,fat_per_100gram)
+    Food,Calories,Carbs,Protein,Fat,
+    Carbs_per_100gram,Protein_per_100gram,Fat_per_100gram)
   highest_protein <- head(highest_protein,1)
   
   output$highest_protein <- renderTable(highest_protein) # food with max protein
   
   output$highest_protein_donut <- renderPlot(DONUT_GRAPH(highest_protein))
   
-  max_fat = max(max_nutrients$fat_per_100gram)
+  max_fat = max(max_nutrients$Fat_per_100gram)
   highest_fat= max_nutrients %>% filter(
-    fat_per_100gram == max_fat
+    Fat_per_100gram == max_fat
   ) %>% select(
-    Food,Carbs,Protein,Fat,
-    carbs_per_100gram,protein_per_100gram,fat_per_100gram)
+    Food,Calories,Carbs,Protein,Fat,
+    Carbs_per_100gram,Protein_per_100gram,Fat_per_100gram)
   highest_fat <- head(highest_fat,1)
   output$highest_fat <- renderTable(highest_fat) # food with max fat
   output$highest_fat_donut <- renderPlot(DONUT_GRAPH(highest_fat))
