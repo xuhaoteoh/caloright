@@ -60,14 +60,14 @@ ui <- fluidPage(
     tabPanel("Food Search",
              sidebarPanel(
                tags$h3("Input:"),
-               fileInput("file1", "Choose CSV File",
-                         accept = c(
-                           "text/csv",
-                           "text/comma-separated-values,text/plain",
-                           ".csv")
-               ),
+#                fileInput("file1", "Choose CSV File",
+#                          accept = c(
+#                            "text/csv",
+#                            "text/comma-separated-values,text/plain",
+#                            ".csv")
+#                ),
                tags$hr(),
-               checkboxInput("header", "Header", TRUE),
+#                checkboxInput("header", "Header", TRUE),
                textInput("FoodName", "Please enter the name of the food:", "Rice"),
                tags$h5("This application shows your the nutrients and calories of your food."),
                submitButton('Search'),
