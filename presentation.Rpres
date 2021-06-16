@@ -13,11 +13,11 @@ type:prompt
 Besides the pandemic situation that is storming the whole world right, there is an another existing problem that is faced by most people which is unhealthy diet due to incorrect nutrition intake.  
 The key questions arising from this are: 
 
-1) How much calories should you consume every day?
+*1) How much calories should you consume every day?*
 
-2) How should you distribute your macronutrients?
+*2) How should you distribute your macronutrients?*
 
-3) What is the recommended food should you eat?
+*3) What is the recommended food should you eat?*
 
 Introduction
 ========================================================
@@ -38,20 +38,15 @@ df[1:3,c(1,2,3,4,5,6)]
 Features
 ========================================================
 type:prompt
-**1) Basal Metabolic Rate (BMR) calculator**
-<small> - A calorie calculator that can assist to estimate the recommended amount of calories needed to consume daily. </small>
+**1) Basal Metabolic Rate (BMR) calculator** - A calorie calculator that can assist to estimate the recommended amount of calories needed to consume daily.
 
-**2) Total Daily Energy Expenditure (TDEE) calculator**
-<small> - Estimation of how many calories you burn per day when exercise is taken into account.</small>
+**2) Total Daily Energy Expenditure (TDEE) calculator** - Estimation of how many calories you burn per day when exercise is taken into account.
 
-**3) Calorie Required calculator**
-<small> - Calculation of amount of calorie required  for an individual to achieve a certain body weight goal. </small>
+**3) Calorie Required calculator** - Calculation of amount of calorie required  for an individual to achieve a certain body weight goal.
 
-**4) Food Search Engine**
-<small> - Search for your favorite foods and obtain the nutritional information about it. </small>
+**4) Food Search Engine** - Search for your favorite foods and obtain the nutritional information about it.
 
-**5) Food Recommendation**
-<small> - Recommend the best food product for your diet based on your goals and amount of calories intake. </small>
+**5) Food Recommendation** - Recommend the best food product for your diet based on your goals and amount of calories intake.
 
 Preview
 ======================================================== 
@@ -67,8 +62,8 @@ type:prompt
 
 ***
 
-Short snippet of the application!
-
 **2) Food recommendation**
 
 ![pic2](spaghetti.gif)
+
+</small>
