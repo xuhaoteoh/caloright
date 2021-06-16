@@ -67,7 +67,7 @@ ui <- fluidPage(
                ),
                tags$hr(),
                checkboxInput("header", "Header", TRUE),
-               textInput("FoodName", "Please enter the name of the food:", "general"),
+               textInput("FoodName", "Please enter the name of the food:", "Rice"),
                tags$h5("This application shows your the nutrients and calories of your food."),
                submitButton('Search'),
                #actionButton("search", "Search", class = "btn-primary"),
@@ -309,14 +309,14 @@ server <- function(input, output) {
     if (is.null(fileName)) return()
     inFile <- input$file1
     fileName <- read.csv(inFile$datapath, header = input$header)
-    fileName[which(fileName$name==input$FoodName), ]
+    fileName[which(fileName$Food==input$FoodName), ]
   })
   
   output$plot <- renderPlot({
     if (is.null(input$FoodName)) return()
     inFile <- input$file1
     fileName <- read.csv(inFile$datapath, header = input$header)
-    selected<- fileName[which(fileName$name==input$FoodName), ]
+    selected<- fileName[which(fileName$Food==input$FoodName), ]
     if (is.null(selected)) return()
     
     df2 <- data.frame(t(selected[-1]))
@@ -328,7 +328,7 @@ server <- function(input, output) {
     rownames(df2) <- 1:nrow(df2)
     
     
-    data <- df2[c(-1,-2,-3,-4),]
+    data <- df2[c(-1,-2,-3,-9),]
     
     
     # load library
@@ -338,7 +338,6 @@ server <- function(input, output) {
     
     data$count = as.numeric(as.character(data$count))
     data <- data[order(data$count,decreasing = TRUE),]
-    data <- data[(1:6),]
     data$fraction = data$count / sum(data$count)
     
     # Compute the cumulative percentages (top of each rectangle)
