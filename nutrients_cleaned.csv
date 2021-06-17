@@ -132,20 +132,20 @@ Onions,1,210,80,2,0,0,1.6,18,Vegetables F-P
 Parsley,2 T.,50,2,0,0,0,0,0,Vegetables F-P
 Parsnips,1 cup,155,95,2,1,0,3,22,Vegetables F-P
 Peas,1 cup,100,66,3,0,0,0.1,13,Vegetables F-P
-"Fresh, steamed peas",1 cup,100,70,5,0,0,2.2,12,Vegetables R-Z
-Frozen peas,1 cup,100,0,5,0,0,1.8,12,Vegetables R-Z
-Split cooked peas,4 cups,100,115,8,0,0,0.4,21,Vegetables R-Z
-heated peas,1 cup,100,53,3,0,0,1,10,Vegetables R-Z
-Peppers canned,1 pod,38,10,0,0,0,0,2,Vegetables R-Z
-"Peppers Raw, green, sweet",1 large,100,25,1,0,0,1.4,6,Vegetables R-Z
-Peppers with beef and crumbs,1 med.,150,255,19,9,8,1,24,Vegetables R-Z
-"Potatoes, baked",1 med.,100,100,2,0,0,0.5,22,Vegetables R-Z
-French-fried,10 pieces,60,155,0,7,3,0.4,20,Vegetables R-Z
-Potatoes Mashed with milk and butter,1 cup,200,230,4,12,11,0.7,28,Vegetables R-Z
-"Potatoes, pan-tried",3/4 cup,100,268,4,14,6,0.4,33,Vegetables R-Z
+"Fresh, steamed peas",1 cup,100,70,5,0,0,2.2,12,Vegetables F-P
+Frozen peas,1 cup,100,0,5,0,0,1.8,12,Vegetables F-P
+Split cooked peas,4 cups,100,115,8,0,0,0.4,21,Vegetables F-P
+heated peas,1 cup,100,53,3,0,0,1,10,Vegetables F-P
+Peppers canned,1 pod,38,10,0,0,0,0,2,Vegetables F-P
+"Peppers Raw, green, sweet",1 large,100,25,1,0,0,1.4,6,Vegetables F-P
+Peppers with beef and crumbs,1 med.,150,255,19,9,8,1,24,Vegetables F-P
+"Potatoes, baked",1 med.,100,100,2,0,0,0.5,22,Vegetables F-P
+French-fried,10 pieces,60,155,0,7,3,0.4,20,Vegetables F-P
+Potatoes Mashed with milk and butter,1 cup,200,230,4,12,11,0.7,28,Vegetables F-P
+"Potatoes, pan-tried",3/4 cup,100,268,4,14,6,0.4,33,Vegetables F-P
 Scalloped with cheese potatoes,3/4 cup,100,145,6,8,7,0.4,14,Vegetables R-Z
 Steamed potatoes before peeling,1 med.,100,80,2,0,0,0.4,19,Vegetables R-Z
-Potato chips,10,20,110,1,7,4,0,10,Vegetables R-Z
+Potato chips,10,20,110,1,7,4,0,10,Vegetables F-P
 Radishes,5 small,50,10,0,0,0,0.3,2,Vegetables R-Z
 Rutabagas,4 cups,100,32,0,0,0,1.4,8,Vegetables R-Z
 Soybeans,1 cup,200,260,22,11,0,3.2,20,Vegetables R-Z
