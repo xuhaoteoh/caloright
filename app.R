@@ -561,3 +561,4 @@ server <- function(input, output,session) {
 
 # Create Shiny object
 shinyApp(ui = ui, server = server)
+  
