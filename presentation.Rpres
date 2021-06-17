@@ -1,13 +1,16 @@
-Caloright : An Interactive Food and Nutritional Dashboard
+
 ==============================================================
+title:false
 transition:rotate
-date : 17th June 2021
-css: style.css
+![title](1.png)
+<small>
+17th June 2021  
 Group 8 Members:
   - Teoh Xu Hao
   - Sun Geng 
   - Muhamad Haziq Fuad 
   - Sakshi Maurya
+</small>
 
 Introduction 
 ========================================================
@@ -24,7 +27,7 @@ Besides the pandemic situation that is currently invading the whole world, there
   *1) How much calories should you consume every day?*  
   *2) How should you distribute your macronutrients?*  
   *3) What are the calories and nutrition of each food?*  
-  *3) What are the recommended foods that you should take?*
+  *4) What are the recommended foods that you should take?*
 </small>
 
 Introduction
