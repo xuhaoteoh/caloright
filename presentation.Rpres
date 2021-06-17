@@ -1,43 +1,46 @@
-Caloright (G8): An Interactive Food and Nutritional Dashboard
+Caloright : An Interactive Food and Nutritional Dashboard
 ==============================================================
-author: 1) Teoh Xu Hao  2) Sun Geng 3) Muhamad Haziq Fuad 4) Sakshi Maurya
-date: 17 June 2021
-transition: rotate
+transition:rotate
+date : 17th June 2021
+css: style.css
+Group 8 Members:
+  - Teoh Xu Hao
+  - Sun Geng 
+  - Muhamad Haziq Fuad 
+  - Sakshi Maurya
+
+Introduction 
+========================================================
+type:prompt
+**About the application :**
+Caloright is an interactive food and nutritional dashboard with food search, calorie calculation and food recommendation.
+
+**Problem Statement :**
+Besides the pandemic situation that is currently invading the whole world, there is another existing problem that is faced by most people which is unhealthy diet due to incorrect nutrition intake.
+
+**Key Questions :**
+
+  *1) How much calories should you consume every day?*
+
+  *2) How should you distribute your macronutrients?*
+
+  *3) What are the recommended foods should you eat?*
 
 Introduction
 ========================================================
 type:prompt
-
-**Problem Statement**
-
-Besides the pandemic situation that is storming the whole world right, there is an another existing problem that is faced by most people which is unhealthy diet due to incorrect nutrition intake.  
-The key questions arising from this are: 
-
-*1) How much calories should you consume every day?*
-
-*2) How should you distribute your macronutrients?*
-
-*3) What is the recommended food should you eat?*
-
-Introduction
-========================================================
-type:prompt
-**Data Source**
-
-The data used in developing this data product was extracted from kaggle which was originated from United States Dept. of Agricultue (USDA) sources. The data source can be found in this [**link**](https://www.kaggle.com/niharika41298/nutrition-details-for-most-common-foods). Below is the snippet of the data:
-
-```{r, echo=FALSE}
-
-df <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
-
-df[1:3,c(1,2,3,4,5,6)]
-
-```
-
+**Data Science Process**
+  - Asking questions
+  - Getting [Data Source](https://www.kaggle.com/niharika41298/nutrition-details-for-most-common-foods)
+  - Cleaning the data by imputation 
+  - Exploratory Data Analysis
+  - Data Visualization
+  - Modeling the data into application
 
 Features
 ========================================================
 type:prompt
+<small>
 **1) Basal Metabolic Rate (BMR) calculator** - A calorie calculator that can assist to estimate the recommended amount of calories needed to consume daily.
 
 **2) Total Daily Energy Expenditure (TDEE) calculator** - Estimation of how many calories you burn per day when exercise is taken into account.
@@ -48,22 +51,25 @@ type:prompt
 
 **5) Food Recommendation** - Recommend the best food product for your diet based on your goals and amount of calories intake.
 
+</small>
+
 Preview
 ======================================================== 
 type:prompt
-<small>Short snippet of the application!
+<small>
+Short snippet of the application!
 
-**1) Nutritional Intake Calculation**
-
-![pic1](foodie.gif)
-
-- Shiny App link
+- [Shiny App](https://xuhaoteoh.shinyapps.io/Caloright/) link
 - [GitHub](https://github.com/xuhaoteoh/caloright) link
+
+**References**
+
+- [Walle, G. V. D. (2019, December 12). What Is a Calorie Deficit, and How Much of One Is Healthy?](https://www.healthline.com/nutrition/calorie-deficit#calorie-needs)
+- [Morgan, M. (2021, June 12). What Should Your Calories &amp; Macros Be When Bulking?](https://fitbod.me/blog/calories-and-macros-for-bulking/)
+- [Physical Activity and Controlling Weight](https://www.k-state.edu/paccats/Contents/PA/control.htm)
 
 ***
 
-**2) Food recommendation**
-
-![pic2](spaghetti.gif)
+![preview](vid1.gif)
 
 </small>
