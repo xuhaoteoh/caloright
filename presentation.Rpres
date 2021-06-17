@@ -12,6 +12,7 @@ Group 8 Members:
 Introduction 
 ========================================================
 type:prompt
+<small>
 **About the application :**
 Caloright is an interactive food and nutritional dashboard with food search, calorie calculation and food recommendation.
 
@@ -20,11 +21,11 @@ Besides the pandemic situation that is currently invading the whole world, there
 
 **Key Questions :**
 
-  *1) How much calories should you consume every day?*
-
-  *2) How should you distribute your macronutrients?*
-
-  *3) What are the recommended foods should you eat?*
+  *1) How much calories should you consume every day?*  
+  *2) How should you distribute your macronutrients?*  
+  *3) What are the calories and nutrition of each food?*  
+  *3) What are the recommended foods that you should take?*
+</small>
 
 Introduction
 ========================================================
