@@ -56,7 +56,8 @@ ui <- fluidPage(
     ,
     tabPanel("Food Search",
              sidebarPanel(
-               tags$h3("Input:"),
+               tags$h5("This application shows your the nutrients and calories of your food."),
+               #tags$h3("Input:"),
                #                fileInput("file1", "Choose CSV File",
                #                          accept = c(
                #                            "text/csv",
@@ -65,9 +66,25 @@ ui <- fluidPage(
                #                ),
                tags$hr(),
                #                checkboxInput("header", "Header", TRUE),
-               textInput("FoodName", "Please enter the name of the food:", "Rice"),
-               tags$h5("This application shows your the nutrients and calories of your food."),
-               submitButton('Search'),
+               tags$h5("Please choose a food category before search."),
+               selectInput('category','Category:',
+                           c("All_Category" = "All_Category",
+                             "Dairy products" = "Dairy_products",
+                             "Fats, Oils, Shortenings" = "Fats_Oils_Shortenings",
+                              "Meat, Poultry" = "Meat_Poultry",
+                              "Fish, Seafood" = "Fish_Seafood",
+                              "Vegetables A-E" = "Vegetables_A_E"),
+                           selected= "All_Category",
+                           ),
+               submitButton('Submit'),
+               selectInput('product','Product:',
+                           choices = NULL,
+               ),
+               submitButton('Seach'),
+               #tags$hr(),
+               #textInput("FoodName", "Please enter the name of the food:", "Rice"),
+               
+               #submitButton('Search'),
                #actionButton("search", "Search", class = "btn-primary"),
                
              ),
@@ -75,20 +92,21 @@ ui <- fluidPage(
                h5('The food that is selected is'),
                verbatimTextOutput("FoodName_txtout"),
                tabsetPanel(
-                 tabPanel("Full File Table",
+                 tabPanel("Table By Category",
                           tableOutput("contents")),
-                 tabPanel("Nutrition Table",
-                          h4("Search Result Table"),
-                          tableOutput("table"),
-                 ),
+                 #tabPanel("Search Result",
+                 #         h4("Search Result Table"),
+                 #         tableOutput("table"),
+                 #),
                  #tabPanel("Food Description",
                  #submitButton('Search'),
                  #uiOutput("url"),
                  #htmlOutput("frame"),),
                  #actionButton("searchwiki", "Search Wiki", class = "btn-primary"),),
                  #submitButton("searchwiki"),),
-                 tabPanel("Nutrition Distribution Graph",
+                 tabPanel("Selected Product & Nutrition Distribution Graph",
                           uiOutput("url"),
+                          tableOutput("table"),
                           plotOutput("plot"))
                )
              )
@@ -309,7 +327,7 @@ DONUT_GRAPH <- function(data_x){
 options(shiny.error = browser)
 
 # Define server function  
-server <- function(input, output) {
+server <- function(input, output,session) {
   library(ggplot2)
   bmr <- reactive({BMR(input$gender,input$weight,input$height,input$age)})
   output$BMRCalculation <- renderPrint(bmr())
@@ -323,6 +341,7 @@ server <- function(input, output) {
   output$GoalNutrients <- renderPlot(GOAL_NUTRIENTS(input$goal,goal_cal()),bg="transparent")
   
   fileName <- reactiveValues(data = NULL)
+  FoodNameSelected <- reactiveValues(data = NULL)
   
   output$contents <- renderTable({
     
@@ -333,12 +352,56 @@ server <- function(input, output) {
     #    }else{
     #      fileName <- read.csv(inFile$datapath, header = input$header)
     #    }
+    
     fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
-    head(fileName)
+    
+    if (input$category == "All_Category"){
+      
+    }else if (input$category =="Dairy_products"){
+      fileName <- filter(fileName,  Category == "Dairy products")
+    }else if (input$category =="Fats_Oils_Shortenings"){
+      fileName <- filter(fileName,  Category == "Fats, Oils, Shortenings")
+    }else if (input$category =="DMeat_Poultry"){
+      fileName <- filter(fileName,  Category == "Meat, Poultry")
+    }else if (input$category =="Fish_Seafood"){
+      fileName <- filter(fileName,  Category == "Fish, Seafood")
+    }else if (input$category =="Vegetables_A_E"){
+      fileName <- filter(fileName,  Category == "Vegetables A-E")
+    }
+    
+    
+    
+    fileName
+  })
+  
+  observe({
+    fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
+    
+    
+    if (input$category == "All_Category"){
+      
+    }else if (input$category =="Dairy_products"){
+      fileName <- filter(fileName,  Category == "Dairy products")
+    }else if (input$category =="Fats_Oils_Shortenings"){
+      fileName <- filter(fileName,  Category == "Fats, Oils, Shortenings")
+    }else if (input$category =="DMeat_Poultry"){
+      fileName <- filter(fileName,  Category == "Meat, Poultry")
+    }else if (input$category =="Fish_Seafood"){
+      fileName <- filter(fileName,  Category == "Fish, Seafood")
+    }else if (input$category =="Vegetables_A_E"){
+      fileName <- filter(fileName,  Category == "Vegetables A-E")
+    }
+    
+    for(atmp in fileName['Food']) { avector <- atmp }
+    updateSelectInput(session, "product",
+                      choices = avector,
+                      selected = tail(avector, 1)
+    )
   })
   
   output$FoodName_txtout <- renderText({
-    input$FoodName
+    #input$FoodName
+    input$product
   })
   
   v <- reactiveValues(data = NULL)
@@ -350,29 +413,33 @@ server <- function(input, output) {
   #  browseURL(paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName)))
   #})
   
-  output$url <-renderUI(a(href=paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName)),"Show WikiPedia Page in your Browser",target="_blank"))
+  output$url <-renderUI({
+    if (is.null(input$product)) return()
+    a(href=paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$product)),"Show WikiPedia Page in your Browser",target="_blank")
+    })
   
   output$frame <- renderUI({
-    test <- paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$FoodName))
+    if (is.null(input$product)) return()
+    test <- paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$product))
     my_test <- tags$iframe(src=test, height=600, width=535)
     print(my_test)
     my_test
   })
   
   output$table <- renderTable({
-    if (is.null(fileName)) return()
+    if (is.null(input$product)) return()
     #inFile <- input$file1
     #fileName <- read.csv(inFile$datapath, header = input$header)
     fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
-    fileName[which(fileName$Food==input$FoodName), ]
+    fileName[which(fileName$Food==input$product), ]
   })
   
   output$plot <- renderPlot({
-    if (is.null(input$FoodName)) return()
+    if (is.null(input$product)) return()
     #inFile <- input$file1
     #fileName <- read.csv(inFile$datapath, header = input$header)
     fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
-    selected<- fileName[which(fileName$Food==input$FoodName), ]
+    selected<- fileName[which(fileName$Food==input$product), ]
     if (is.null(selected)) return()
     
     df2 <- data.frame(t(selected[-1]))
