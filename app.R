@@ -19,7 +19,7 @@ ui <- fluidPage(
     ),
     tabPanel("Calories & Nutrition",
              sidebarPanel(
-               tags$h3("Input:"),
+               h4(tags$b("Input:")),
                numericInput('weight', 'Weight (kg):', 55, min = 40, max = 300, step = 0.1),
                numericInput('height', 'Height (cm):', 150, min = 80, max = 200, step = 0.1),
                numericInput('age', 'Age:', 20, min = 1, max = 100, step = 1),
@@ -36,22 +36,37 @@ ui <- fluidPage(
                            c("Lose Weight" = "lose_weight",
                              "Maintain Weight" = "maintain_weight",
                              "Gain Weight" = "gain_weight")),
-               h5("Press submit after input and selection."),
-               submitButton('Submit')
+               h5("Please press calculate after input and selection."),
+               submitButton('Calculate')
              ), # sidebarPanel
              mainPanel(
-               h3('How much calories shall you take?'),
+               h3(tags$b('How much calories (kcal) shall you take?')),
                
-               h4('Your Basal Metabolic Rate (BMR) is '),
+               h4('Your', tags$b("Basal Metabolic Rate (BMR)"),'is '),
                verbatimTextOutput("BMRCalculation"), #change according to output
+               tags$h4(tags$style(HTML("
+                            #BMRCalculation {
+                              font-size: 15px;
+                            }
+                            "))),
                br(),
-               h4('Your Total Daily Energy Expenditure (TDEE) is '),
+               h4('Your', tags$b("Total Daily Energy Expenditure (TDEE)"), 'is'),
                verbatimTextOutput("TDEECalculation"), #change according to output, TDEE is the "multiplier" variable in the RMD file.
+               tags$h4(tags$style(HTML("
+                            #TDEECalculation {
+                              font-size: 15px;
+                            }
+                            "))),
                br(),
-               h4('To achieve your goal, the amount of calories you shall take is'),
+               h4(tags$b('To achieve your goal, the amount of calories you shall take is')),
                verbatimTextOutput("GoalCalculation"), #change according to output
+               tags$h4(tags$style(HTML("
+                            #GoalCalculation {
+                              font-size: 15px;
+                            }
+                            "))),
                br(),
-               h4('Your nutritions shall be distributed as below'),
+               h4(tags$b('Your nutritions shall be distributed as below:')),
                plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
              
@@ -59,7 +74,7 @@ ui <- fluidPage(
     ,
     tabPanel("Food Search",
              sidebarPanel(
-               tags$h5("This application shows your the nutrients and calories of your food."),
+               h4("This application shows the",tags$b("nutrients"), "and", tags$b("calories"), "of your food."),
                #tags$h3("Input:"),
                #                fileInput("file1", "Choose CSV File",
                #                          accept = c(
@@ -69,7 +84,8 @@ ui <- fluidPage(
                #                ),
                tags$hr(),
                #                checkboxInput("header", "Header", TRUE),
-               tags$h5("Please choose a food category before search."),
+               tags$h4("Please choose a food category before search."),
+               br(),
                selectInput('category','Category:',
                            c("All_Category" = "All_Category",
                              "Dairy products" = "Dairy_products",
@@ -92,6 +108,7 @@ ui <- fluidPage(
                            selected= "All_Category",
                ),
                submitButton('Submit'),
+               br(),
                selectInput('product','Product:',
                            choices = NULL,
                ),
@@ -104,7 +121,7 @@ ui <- fluidPage(
                
              ),
              mainPanel(
-               h5('The food that is selected is'),
+               h4('The food that is selected is'),
                verbatimTextOutput("FoodName_txtout"),
                tabsetPanel(
                  tabPanel("Table By Category",
@@ -130,15 +147,15 @@ ui <- fluidPage(
     tabPanel("Food with the Highest Nutritional Value",
              h4(tags$b("The outcome of descriptive analysis is to find out the most recommended for each category: Carbohydrate,Protein & Fat.")),
              
-             h5("The food with highest carbohydrate is"),
+             h4("The food with the highest carbohydrate content is"),
              tableOutput("highest_carbs"),
              plotOutput("highest_carbs_donut"),
              
-             h5("The food with highest protein is"),
+             h4("The food with the highest protein content is"),
              tableOutput("highest_protein"),
              plotOutput("highest_protein_donut"),
              
-             h5("The food with highest fat is"),
+             h4("The food with the highest fat content is"),
              tableOutput("highest_fat"),
              plotOutput("highest_fat_donut")
     ) #Navbar 2, tabPanel 
@@ -490,7 +507,8 @@ server <- function(input, output,session) {
     #fileName <- read.csv(inFile$datapath, header = input$header)
     fileName <- read.csv("nutrients_cleaned.csv",stringsAsFactors = FALSE)
     fileName[which(fileName$Food==input$product), ]
-  })
+    
+  },bordered=TRUE,align="c")
   
   output$plot <- renderPlot({
     if (is.null(input$product)) return()
@@ -554,7 +572,7 @@ server <- function(input, output,session) {
     Carbs_per_100gram,Protein_per_100gram,Fat_per_100gram)
   #output$highest_carbs <- renderPrint(highest_carbs) # food with max carbs
   
-  output$highest_carbs <- renderTable(highest_carbs)
+  output$highest_carbs <- renderTable(highest_carbs,bordered=TRUE,align="c")
   
   highest_nut_carbs <- data.frame(
     category=c("Carbohydrates", "Protein"),
@@ -601,7 +619,7 @@ server <- function(input, output,session) {
     Carbs_per_100gram,Protein_per_100gram,Fat_per_100gram)
   highest_protein <- head(highest_protein,1)
   
-  output$highest_protein <- renderTable(highest_protein) # food with max protein
+  output$highest_protein <- renderTable(highest_protein,bordered=TRUE,align="c") # food with max protein
   
   output$highest_protein_donut <- renderPlot(DONUT_GRAPH(highest_protein))
   
@@ -612,7 +630,7 @@ server <- function(input, output,session) {
     Food,Calories,Carbs,Protein,Fat,
     Carbs_per_100gram,Protein_per_100gram,Fat_per_100gram)
   highest_fat <- head(highest_fat,1)
-  output$highest_fat <- renderTable(highest_fat) # food with max fat
+  output$highest_fat <- renderTable(highest_fat,bordered=TRUE,align="c") # food with max fat
   output$highest_fat_donut <- renderPlot(DONUT_GRAPH(highest_fat))
 } # server
 
