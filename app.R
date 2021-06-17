@@ -8,7 +8,7 @@ ui <- fluidPage(
   
   theme = shinytheme("cerulean"),
   navbarPage(
-
+    
     "Caloright",
     tabPanel("Introduction",
              div(img(src="1.png"),style="text-align: center;"),
@@ -40,14 +40,17 @@ ui <- fluidPage(
                submitButton('Submit')
              ), # sidebarPanel
              mainPanel(
-               h1('How much calories shall you take?'),
+               h3('How much calories shall you take?'),
                
                h4('Your Basal Metabolic Rate (BMR) is '),
                verbatimTextOutput("BMRCalculation"), #change according to output
+               br(),
                h4('Your Total Daily Energy Expenditure (TDEE) is '),
                verbatimTextOutput("TDEECalculation"), #change according to output, TDEE is the "multiplier" variable in the RMD file.
+               br(),
                h4('To achieve your goal, the amount of calories you shall take is'),
                verbatimTextOutput("GoalCalculation"), #change according to output
+               br(),
                h4('Your nutritions shall be distributed as below'),
                plotOutput("GoalNutrients") #change according to output
              ) # mainPanel
@@ -71,11 +74,23 @@ ui <- fluidPage(
                            c("All_Category" = "All_Category",
                              "Dairy products" = "Dairy_products",
                              "Fats, Oils, Shortenings" = "Fats_Oils_Shortenings",
-                              "Meat, Poultry" = "Meat_Poultry",
-                              "Fish, Seafood" = "Fish_Seafood",
-                              "Vegetables A-E" = "Vegetables_A_E"),
+                             "Meat, Poultry" = "Meat_Poultry",
+                             "Fish, Seafood" = "Fish_Seafood",
+                             "Vegetables A-E" = "Vegetables_A_E",
+                             "Vegetables F-P" = "Vegetables_F_P",
+                             "Vegetables R-Z" = "Vegetables_R_Z",
+                             "Fruits A-F" = "Fruits_A_F",
+                             "Fruits G-P" = "Fruits_G_P",
+                             "Fruits R-Z" = "Fruits_R_Z",
+                             "Breads, Cereal, Fastfood, Grains" = "BCFG",
+                             "Soups" = "Soups",
+                             "Desserts, Sweets" = "Desserts_Sweets",
+                             "Jams, Jellies" = "Jams_Jellies",
+                             "Seeds and Nuts" = "Seeds_and_Nuts",
+                             "Drinks, Alcohol, Beverages" = "Drinks_Alcohol_Beverages"
+                             ),
                            selected= "All_Category",
-                           ),
+               ),
                submitButton('Submit'),
                selectInput('product','Product:',
                            choices = NULL,
@@ -361,14 +376,35 @@ server <- function(input, output,session) {
       fileName <- filter(fileName,  Category == "Dairy products")
     }else if (input$category =="Fats_Oils_Shortenings"){
       fileName <- filter(fileName,  Category == "Fats, Oils, Shortenings")
-    }else if (input$category =="DMeat_Poultry"){
+    }else if (input$category =="Meat_Poultry"){
       fileName <- filter(fileName,  Category == "Meat, Poultry")
     }else if (input$category =="Fish_Seafood"){
       fileName <- filter(fileName,  Category == "Fish, Seafood")
     }else if (input$category =="Vegetables_A_E"){
       fileName <- filter(fileName,  Category == "Vegetables A-E")
+    }else if (input$category =="Vegetables_F_P"){
+      fileName <- filter(fileName,  Category == "Vegetables F-P")
+    }else if (input$category =="Vegetables_R_Z"){
+      fileName <- filter(fileName,  Category == "Vegetables R-Z")
+    }else if (input$category =="Fruits_A_F"){
+      fileName <- filter(fileName,  Category == "Fruits A-F")
+    }else if (input$category =="Fruits_G_P"){
+      fileName <- filter(fileName,  Category == "Fruits G-P")
+    }else if (input$category =="Fruits_R_Z"){
+      fileName <- filter(fileName,  Category == "Fruits R-Z")
+    }else if (input$category =="BCFG"){
+      fileName <- filter(fileName,  Category == "Breads, cereals, fastfood,grains")
+    }else if (input$category =="Soups"){
+      fileName <- filter(fileName,  Category == "Soups")
+    }else if (input$category =="Desserts_Sweets"){
+      fileName <- filter(fileName,  Category == "Desserts, sweets")
+    }else if (input$category =="Jams_Jellies"){
+      fileName <- filter(fileName,  Category == "Jams, Jellies")
+    }else if (input$category =="Seeds_and_Nuts"){
+      fileName <- filter(fileName,  Category == "Seeds and Nuts")
+    }else if (input$category =="Drinks_Alcohol_Beverages"){
+      fileName <- filter(fileName,  Category == "Drinks,Alcohol, Beverages")
     }
-    
     
     
     fileName
@@ -384,12 +420,34 @@ server <- function(input, output,session) {
       fileName <- filter(fileName,  Category == "Dairy products")
     }else if (input$category =="Fats_Oils_Shortenings"){
       fileName <- filter(fileName,  Category == "Fats, Oils, Shortenings")
-    }else if (input$category =="DMeat_Poultry"){
+    }else if (input$category =="Meat_Poultry"){
       fileName <- filter(fileName,  Category == "Meat, Poultry")
     }else if (input$category =="Fish_Seafood"){
       fileName <- filter(fileName,  Category == "Fish, Seafood")
     }else if (input$category =="Vegetables_A_E"){
       fileName <- filter(fileName,  Category == "Vegetables A-E")
+    }else if (input$category =="Vegetables_F_P"){
+      fileName <- filter(fileName,  Category == "Vegetables F-P")
+    }else if (input$category =="Vegetables_R_Z"){
+      fileName <- filter(fileName,  Category == "Vegetables R-Z")
+    }else if (input$category =="Fruits_A_F"){
+      fileName <- filter(fileName,  Category == "Fruits A-F")
+    }else if (input$category =="Fruits_G_P"){
+      fileName <- filter(fileName,  Category == "Fruits G-P")
+    }else if (input$category =="Fruits_R_Z"){
+      fileName <- filter(fileName,  Category == "Fruits R-Z")
+    }else if (input$category =="BCFG"){
+      fileName <- filter(fileName,  Category == "Breads, cereals, fastfood,grains")
+    }else if (input$category =="Soups"){
+      fileName <- filter(fileName,  Category == "Soups")
+    }else if (input$category =="Desserts_Sweets"){
+      fileName <- filter(fileName,  Category == "Desserts, sweets")
+    }else if (input$category =="Jams_Jellies"){
+      fileName <- filter(fileName,  Category == "Jams, Jellies")
+    }else if (input$category =="Seeds_and_Nuts"){
+      fileName <- filter(fileName,  Category == "Seeds and Nuts")
+    }else if (input$category =="Drinks_Alcohol_Beverages"){
+      fileName <- filter(fileName,  Category == "Drinks,Alcohol, Beverages")
     }
     
     for(atmp in fileName['Food']) { avector <- atmp }
@@ -416,7 +474,7 @@ server <- function(input, output,session) {
   output$url <-renderUI({
     if (is.null(input$product)) return()
     a(href=paste0("https://en.wikipedia.org/w/index.php?search=", URLencode(input$product)),"Show WikiPedia Page in your Browser",target="_blank")
-    })
+  })
   
   output$frame <- renderUI({
     if (is.null(input$product)) return()
@@ -561,4 +619,3 @@ server <- function(input, output,session) {
 
 # Create Shiny object
 shinyApp(ui = ui, server = server)
-  
