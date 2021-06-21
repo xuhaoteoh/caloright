@@ -1,5 +1,7 @@
 # Caloright
 ### WQD7001 Group 8: Teoh Xu Hao, Sun Geng, Muhamad Haziq Fuad, Sakshi Maurya
+### About Caloright
+Caloright is an interactive food and nutritional dashboard with food search, calorie calculation and food recommendation.Besides the pandemic situation that is storming the whole world right, there is an another existing problem that is faced by most people which is unhealthy diet due to incorrect nutrition intake. So in order to maintain your health we have created this application.
 
 Hello! This is the Github Repository for our Shiny App.
 
